@@ -1,0 +1,5 @@
+requests==2.22.0
+bs4==0.0.1
+html2text==2020.1.16
+discord.py==1.6.0
+nest-asyncio==1.5.1
