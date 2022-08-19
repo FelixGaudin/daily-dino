@@ -21,21 +21,30 @@ def get_dino_infos():
         "img": div.find_next('img')['src']
     }
 
-bot = commands.Bot(command_prefix="GRAOU")
+bot = commands.Bot(command_prefix="+")
 WHEN = time(16, 0, 0)
 
+
+def get_embed():
+    infos = get_dino_infos()
+    embed = Embed(title=infos["name"], url=infos["url"],
+                  description=infos["content"])
+    embed.set_thumbnail(url=infos["img"])
+    return embed
+
+@bot.command()
+async def GRAOU(ctx, **kwargs):
+    await ctx.send(embed=get_embed())
 
 async def called_once_a_day():  # Fired every day
     # Make sure your guild cache is ready so the channel can be found via get_channel
     await bot.wait_until_ready()
 
-    infos = get_dino_infos()
     # Note: It's more efficient to do bot.get_guild(guild_id).get_channel(channel_id) as there's less looping involved, but just get_channel still works fine
     channel = bot.get_channel(CHANNEL_ID)
 
-    embed=Embed(title=infos["name"], url=infos["url"], description=infos["content"])
-    embed.set_thumbnail(url=infos["img"])
-    await channel.send(embed=embed)
+    
+    await channel.send(embed=get_embed())
 
 
 async def background_task():
